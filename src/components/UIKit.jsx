@@ -44,6 +44,10 @@ export const Header = () => (
           <div className="ml-10 flex items-baseline space-x-4">
             <NavItem to="/">Home</NavItem>
             <NavItem to="/mapa">Mapa</NavItem>
+            {/* LINKS ADICIONADOS */}
+            <NavItem to="/plantas">Plantas</NavItem>
+            <NavItem to="/manutencao">Manutenção</NavItem>
+            {/* FIM DOS LINKS ADICIONADOS */}
             <NavItem to="/forum">Fórum</NavItem>
             <NavItem to="/agenda">Agenda</NavItem>
             <NavItem to="/reportar">Reportar Terreno</NavItem>
@@ -155,4 +159,3 @@ export const FileInput = ({ className = "", onChange, disabled }) => (
     className={`w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-green-600 file:text-white hover:file:bg-green-700 disabled:opacity-50 ${className}`}
   />
 );
-

@@ -10,11 +10,17 @@ import LoginPage from "./pages/LoginPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import MapPage from "./pages/MapPage.jsx";
 
-// Novas Páginas (Semana 2)
+// Páginas (Semana 2 - Formulários e Comunidade)
 import ReportarTerrenoPage from "./pages/ReportarTerrenoPage.jsx";
 import ApoieUmaHortaPage from "./pages/ApoieUmaHortaPage.jsx";
 import AgendaPage from "./pages/AgendaPage.jsx";
 import ForumPage from "./pages/ForumPage.jsx";
+
+// Páginas (Semana 2 - Conteúdo e Guias) - ADICIONADAS
+import ManutencaoPage from './pages/ManutencaoPage.jsx';
+import GuiaDetailPage from './pages/GuiaDetailPage.jsx';
+import PlantasPage from './pages/PlantasPage.jsx';
+import PlantaDetailPage from './pages/PlantaDetailPage.jsx';
 
 function App() {
   return (
@@ -32,11 +38,17 @@ function App() {
             <Route path="/cadastro" element={<RegisterPage />} />
             <Route path="/mapa" element={<MapPage />} />
 
-            {/* Novas Rotas da Semana 2 (Formulários e Comunidade) */}
+            {/* Rotas da Semana 2 (Formulários e Comunidade) */}
             <Route path="/reportar" element={<ReportarTerrenoPage />} />
             <Route path="/apoie" element={<ApoieUmaHortaPage />} />
             <Route path="/agenda" element={<AgendaPage />} />
             <Route path="/forum" element={<ForumPage />} />
+            
+            {/* Rotas de Conteúdo e Guias (ADICIONADAS) */}
+            <Route path="/manutencao" element={<ManutencaoPage />} />
+            <Route path="/manutencao/:id" element={<GuiaDetailPage />} />
+            <Route path="/plantas" element={<PlantasPage />} />
+            <Route path="/plantas/:id" element={<PlantaDetailPage />} />
             
             {/* TODO: Adicionar uma página 404 (NotFoundPage) */}
           </Routes>
@@ -49,4 +61,3 @@ function App() {
 }
 
 export default App;
-
