@@ -1,35 +1,51 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Header, Footer } from './components/UIKit.jsx';
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-// Importação dos componentes de página
-import HomePage from './pages/HomePage.jsx';
-import LoginPage from './pages/LoginPage.jsx';
-import RegisterPage from './pages/RegisterPage.jsx';
-import MapPage from './pages/MapPage.jsx';
+// Layout e UI
+import { Header, Footer } from "./components/UIKit.jsx";
+
+// Páginas Principais (Semana 1)
+import HomePage from "./pages/HomePage.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
+import RegisterPage from "./pages/RegisterPage.jsx";
+import MapPage from "./pages/MapPage.jsx";
+
+// Novas Páginas (Semana 2)
+import ReportarTerrenoPage from "./pages/ReportarTerrenoPage.jsx";
+import ApoieUmaHortaPage from "./pages/ApoieUmaHortaPage.jsx";
+import AgendaPage from "./pages/AgendaPage.jsx";
+import ForumPage from "./pages/ForumPage.jsx";
 
 function App() {
   return (
     <BrowserRouter>
+      {/* Estrutura de layout principal */}
       <div className="flex flex-col min-h-screen bg-gray-900 text-white">
-        {/* O Header e o Footer ficam fora do <Routes> para aparecerem em todas as páginas */}
         <Header />
 
-        <main className="flex-grow container mx-auto p-4 md:p-8">
+        {/* O conteúdo principal da página é renderizado aqui */}
+        <main className="flex-grow container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
           <Routes>
-            {/* Define cada rota da aplicação */}
+            {/* Rotas da Semana 1 */}
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/cadastro" element={<RegisterPage />} />
             <Route path="/mapa" element={<MapPage />} />
-            {/* Adicionar outras rotas aqui conforme necessário */}
+
+            {/* Novas Rotas da Semana 2 (Formulários e Comunidade) */}
+            <Route path="/reportar" element={<ReportarTerrenoPage />} />
+            <Route path="/apoie" element={<ApoieUmaHortaPage />} />
+            <Route path="/agenda" element={<AgendaPage />} />
+            <Route path="/forum" element={<ForumPage />} />
+            
+            {/* TODO: Adicionar uma página 404 (NotFoundPage) */}
           </Routes>
         </main>
 
         <Footer />
       </div>
     </BrowserRouter>
-  ); // <--- PARÊNTESE QUE FALTAVA
+  );
 }
 
 export default App;
