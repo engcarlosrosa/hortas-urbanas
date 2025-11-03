@@ -27,18 +27,18 @@ const mockPlantasCompleto = [
   { id: 'pimentao', nome: 'Pimentão', categoria: 'legumes', imageUrl: 'https://images.pexels.com/photos/2893635/pexels-photo-2893635.jpeg?auto=compress&cs=tinysrgb&w=600' },
   // Ervas Medicinais
   { id: 'anis-estrelado', nome: 'Anis-estrelado', categoria: 'ervas', imageUrl: 'https://images.pexels.com/photos/30112806/pexels-photo-30112806.jpeg?auto=compress&cs=tinysrgb&w=600' },
-  { id: 'erva-doce', nome: 'Erva-doce', categoria: 'ervas', imageUrl: 'falta colocar' },
-  { id: 'boldo', nome: 'Boldo', categoria: 'ervas', imageUrl: 'falta colocar' },
-  { id: 'capim-limao', nome: 'Capim-limão', categoria: 'ervas', imageUrl: 'falta colocar' },
-  { id: 'salvia', nome: 'Sálvia', categoria: 'ervas', imageUrl: 'falta colocar' },
-  { id: 'erva-cidreira', nome: 'Erva-cidreira', categoria: 'ervas', imageUrl: 'falta colocar' },
+  { id: 'erva-doce', nome: 'Erva-doce', categoria: 'ervas', imageUrl: 'https://images.pexels.com/photos/6045502/pexels-photo-6045502.jpeg?auto=compress&cs=tinysrgb&w=600' },
+  { id: 'boldo', nome: 'Boldo', categoria: 'ervas', imageUrl: 'https://images.pexels.com/photos/4098469/pexels-photo-4098469.jpeg?auto=compress&cs=tinysrgb&w=600' },
+  { id: 'capim-limao', nome: 'Capim-limão', categoria: 'ervas', imageUrl: 'https://images.pexels.com/photos/6021461/pexels-photo-6021461.jpeg?auto=compress&cs=tinysrgb&w=600' },
+  { id: 'salvia', nome: 'Sálvia', categoria: 'ervas', imageUrl: 'https://images.pexels.com/photos/33209626/pexels-photo-33209626.jpeg?auto=compress&cs=tinysrgb&w=600' },
+  { id: 'erva-cidreira', nome: 'Erva-cidreira', categoria: 'ervas', imageUrl: 'https://cdn.pixabay.com/photo/2020/05/25/13/43/melissa-5218673_1280.jpg' },
   // Temperos
-  { id: 'cebolinha', nome: 'Cebolinha', categoria: 'temperos', imageUrl: 'falta colocar' },
-  { id: 'salsa', nome: 'Salsa', categoria: 'temperos', imageUrl: 'falta colocar' },
-  { id: 'manjericao', nome: 'Manjericão', categoria: 'temperos', imageUrl: 'falta colocar' },
-  { id: 'hortela', nome: 'Hortelã', categoria: 'temperos', imageUrl: 'falta colocar' },
-  { id: 'louro', nome: 'Louro', categoria: 'temperos', imageUrl: 'falta colocar' },
-  { id: 'alecrim', nome: 'Alecrim', categoria: 'temperos', imageUrl: 'falta colocar' },
+  { id: 'cebolinha', nome: 'Cebolinha', categoria: 'temperos', imageUrl: 'https://cdn.pixabay.com/photo/2016/03/28/22/46/chives-1287096_1280.jpg' },
+  { id: 'salsa', nome: 'Salsa', categoria: 'temperos', imageUrl: 'https://cdn.pixabay.com/photo/2018/06/03/13/09/parsley-3450411_1280.jpg' },
+  { id: 'manjericao', nome: 'Manjericão', categoria: 'temperos', imageUrl: 'https://cdn.pixabay.com/photo/2016/03/10/18/44/top-view-1248955_1280.jpg' },
+  { id: 'hortela', nome: 'Hortelã', categoria: 'temperos', imageUrl: 'https://cdn.pixabay.com/photo/2017/06/12/19/23/moroccan-mint-2396530_1280.jpg' },
+  { id: 'louro', nome: 'Louro', categoria: 'temperos', imageUrl: 'https://cdn.pixabay.com/photo/2017/09/23/19/24/laurel-2779880_1280.jpg' },
+  { id: 'alecrim', nome: 'Alecrim', categoria: 'temperos', imageUrl: 'https://cdn.pixabay.com/photo/2020/06/04/14/52/rosemary-5259098_1280.jpg' },
 ];
 
 const PlantasPage = () => {
@@ -91,5 +91,8 @@ const PlantasPage = () => {
 };
 
 export default PlantasPage;
+
+
+
 
 

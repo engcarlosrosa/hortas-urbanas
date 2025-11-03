@@ -20,18 +20,18 @@ const mockPlantasDBCompleto = {
   'pimentao': { nome: 'Pimentão', categoria: 'Legume', imageUrl: 'https://images.pexels.com/photos/2893635/pexels-photo-2893635.jpeg?auto=compress&cs=tinysrgb&w=1260', cuidados: 'Assim como a berinjela, ama calor e sol pleno. Regas regulares. Pode precisar de um tutor (estaca) para apoiar a planta.', epoca: 'Verão.' },
   // Ervas Medicinais
   'anis-estrelado': { nome: 'Anis-estrelado', categoria: 'Erva Medicinal', imageUrl: 'https://images.pexels.com/photos/30112806/pexels-photo-30112806.jpeg?auto=compress&cs=tinysrgb&w=1260', cuidados: 'É uma árvore, difícil de cultivar em vasos. Prefere climas subtropicais, solo húmido e bem drenado.', epoca: 'Colheita dos frutos antes de amadurecerem.' },
-  'erva-doce': { nome: 'Erva-doce (Funcho)', categoria: 'Erva Medicinal', imageUrl: 'falta colocar', cuidados: 'Gosta de sol pleno e solo bem drenado. Não gosta de ser transplantada, plante no local definitivo.', epoca: 'Plantar na primavera.' },
-  'boldo': { nome: 'Boldo', categoria: 'Erva Medicinal', imageUrl: 'falta colocar', cuidados: 'Arbusto muito rústico. Pega fácil por galho. Gosta de sol e tolera solos mais pobres, mas não gosta de encharcamento.', epoca: 'Ano todo.' },
-  'capim-limao': { nome: 'Capim-limão', categoria: 'Erva Medicinal', imageUrl: 'falta colocar', cuidados: 'Precisa de sol pleno e cresce bastante, formando touceiras. Regas regulares. Fácil de cultivar.', epoca: 'Ano todo.' },
-  'salvia': { nome: 'Sálvia', categoria: 'Erva Medicinal', imageUrl: 'falta colocar', cuidados: 'Gosta de muito sol e solo bem drenado. Não tolera excesso de água. Ótima para vasos.', epoca: 'Ano todo.' },
-  'erva-cidreira': { nome: 'Erva-cidreira (Melissa)', categoria: 'Erva Medicinal', imageUrl: 'falta colocar', cuidados: 'Gosta de sol pela manhã (meia-sombra) e solo húmido. É invasiva, por isso é ótimo plantá-la em vasos.', epoca: 'Ano todo.' },
+  'erva-doce': { nome: 'Erva-doce (Funcho)', categoria: 'Erva Medicinal', imageUrl: 'https://images.pexels.com/photos/6045502/pexels-photo-6045502.jpeg?auto=compress&cs=tinysrgb&w=1260', cuidados: 'Gosta de sol pleno e solo bem drenado. Não gosta de ser transplantada, plante no local definitivo.', epoca: 'Plantar na primavera.' },
+  'boldo': { nome: 'Boldo', categoria: 'Erva Medicinal', imageUrl: 'https://images.pexels.com/photos/4098469/pexels-photo-4098469.jpeg?auto=compress&cs=tinysrgb&w=1260', cuidados: 'Arbusto muito rústico. Pega fácil por galho. Gosta de sol e tolera solos mais pobres, mas não gosta de encharcamento.', epoca: 'Ano todo.' },
+  'capim-limao': { nome: 'Capim-limão', categoria: 'Erva Medicinal', imageUrl: 'https://images.pexels.com/photos/6021461/pexels-photo-6021461.jpeg?auto=compress&cs=tinysrgb&w=1260', cuidados: 'Precisa de sol pleno e cresce bastante, formando touceiras. Regas regulares. Fácil de cultivar.', epoca: 'Ano todo.' },
+  'salvia': { nome: 'Sálvia', categoria: 'Erva Medicinal', imageUrl: 'https://images.pexels.com/photos/33209626/pexels-photo-33209626.jpeg?auto=compress&cs=tinysrgb&w=1260', cuidados: 'Gosta de muito sol e solo bem drenado. Não tolera excesso de água. Ótima para vasos.', epoca: 'Ano todo.' },
+  'erva-cidreira': { nome: 'Erva-cidreira (Melissa)', categoria: 'Erva Medicinal', imageUrl: 'httpsE://cdn.pixabay.com/photo/2020/05/25/13/43/melissa-5218673_1280.jpg', cuidados: 'Gosta de sol pela manhã (meia-sombra) e solo húmido. É invasiva, por isso é ótimo plantá-la em vasos.', epoca: 'Ano todo.' },
   // Temperos
-  'cebolinha': { nome: 'Cebolinha', categoria: 'Tempero', imageUrl: 'falta colocar', cuidados: 'Muito fácil! Gosta de sol e solo sempre húmido. Pode cortar as folhas que elas crescem de novo. Perfeita para vasos.', epoca: 'Ano todo.' },
-  'salsa': { nome: 'Salsa', categoria: 'Tempero', imageUrl: 'falta colocar', cuidados: 'Fácil de cultivar. Gosta de meia-sombra (sol da manhã) e rega frequente. Pode ser plantada em vasos pequenos.', epoca: 'Ano todo.' },
-  'manjericao': { nome: 'Manjericão', categoria: 'Tempero', imageUrl: 'falta colocar', cuidados: 'Ama sol (pelo menos 4h) e regas frequentes, mas sem encharcar o solo. Retire as flores para que a planta continue a dar folhas.', epoca: 'Primavera e verão.' },
-  'hortela': { nome: 'Hortelã', categoria: 'Tempero', imageUrl: 'falta colocar', cuidados: 'Gosta de meia-sombra e solo bem húmido. É EXTREMAMENTE invasiva. Plante-a **sempre** num vaso sozinha.', epoca: 'Ano todo.' },
-  'louro': { nome: 'Louro', categoria: 'Tempero', imageUrl: 'falta colocar', cuidados: 'É uma árvore que cresce lentamente. Pode ser mantida em vaso grande. Gosta de sol e solo bem drenado.', epoca: 'Ano todo.' },
-  'alecrim': { nome: 'Alecrim', categoria: 'Tempero', imageUrl: 'falta colocar', cuidados: 'Ama sol pleno (pelo menos 6h) e ODEIA excesso de água. O solo deve ser bem drenado. Perfeito para vasos.', epoca: 'Ano todo.' }
+  'cebolinha': { nome: 'Cebolinha', categoria: 'Tempero', imageUrl: 'https://cdn.pixabay.com/photo/2016/03/28/22/46/chives-1287096_1280.jpg', cuidados: 'Muito fácil! Gosta de sol e solo sempre húmido. Pode cortar as folhas que elas crescem de novo. Perfeita para vasos.', epoca: 'Ano todo.' },
+  'salsa': { nome: 'Salsa', categoria: 'Tempero', imageUrl: 'https://cdn.pixabay.com/photo/2018/06/03/13/09/parsley-3450411_1280.jpg', cuidados: 'Fácil de cultivar. Gosta de meia-sombra (sol da manhã) e rega frequente. Pode ser plantada em vasos pequenos.', epoca: 'Ano todo.' },
+  'manjericao': { nome: 'Manjericão', categoria: 'Tempero', imageUrl: 'https://cdn.pixabay.com/photo/2016/03/10/18/44/top-view-1248955_1280.jpg', cuidados: 'Ama sol (pelo menos 4h) e regas frequentes, mas sem encharcar o solo. Retire as flores para que a planta continue a dar folhas.', epoca: 'Primavera e verão.' },
+  'hortela': { nome: 'Hortelã', categoria: 'Tempero', imageUrl: 'https://cdn.pixabay.com/photo/2017/06/12/19/23/moroccan-mint-2396530_1280.jpg', cuidados: 'Gosta de meia-sombra e solo bem húmido. É EXTREMAMENTE invasiva. Plante-a **sempre** num vaso sozinha.', epoca: 'Ano todo.' },
+  'louro': { nome: 'Louro', categoria: 'Tempero', imageUrl: 'httpsD://cdn.pixabay.com/photo/2017/09/23/19/24/laurel-2779880_1280.jpg', cuidados: 'É uma árvore que cresce lentamente. Pode ser mantida em vaso grande. Gosta de sol e solo bem drenado.', epoca: 'Ano todo.' },
+  'alecrim': { nome: 'Alecrim', categoria: 'Tempero', imageUrl: 'https://cdn.pixabay.com/photo/2020/06/04/14/52/rosemary-5259098_1280.jpg', cuidados: 'Ama sol pleno (pelo menos 6h) e ODEIA excesso de água. O solo deve ser bem drenado. Perfeito para vasos.', epoca: 'Ano todo.' }
 };
 
 const PlantaDetailPage = () => {
@@ -84,4 +84,6 @@ const PlantaDetailPage = () => {
 };
 
 export default PlantaDetailPage;
+
+
 
