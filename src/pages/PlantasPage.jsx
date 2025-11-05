@@ -8,6 +8,7 @@ const categorias = [
   { id: 'legumes', nome: 'Legumes' },
   { id: 'ervas', nome: 'Ervas Medicinais' },
   { id: 'temperos', nome: 'Temperos' },
+  { id: 'pancs', nome: 'PANCs' },
 ];
 
 const mockPlantasCompleto = [
@@ -39,6 +40,13 @@ const mockPlantasCompleto = [
   { id: 'hortela', nome: 'Hortelã', categoria: 'temperos', imageUrl: 'https://cdn.pixabay.com/photo/2017/06/12/19/23/moroccan-mint-2396530_1280.jpg' },
   { id: 'louro', nome: 'Louro', categoria: 'temperos', imageUrl: 'https://cdn.pixabay.com/photo/2017/09/23/19/24/laurel-2779880_1280.jpg' },
   { id: 'alecrim', nome: 'Alecrim', categoria: 'temperos', imageUrl: 'https://cdn.pixabay.com/photo/2020/06/04/14/52/rosemary-5259098_1280.jpg' },
+  // PANCs
+  { id: 'taioba', nome: 'Taioba', categoria: 'pancs', imageUrl: 'https://cdn.pixabay.com/photo/2021/10/20/12/46/elephants-ears-6725939_1280.jpg' },
+  { id: 'ora-pro-nobis', nome: 'Ora-pro-nóbis', categoria: 'pancs', imageUrl: 'https://cdn.pixabay.com/photo/2022/11/15/14/32/flower-7594101_1280.jpg' },
+  { id: 'vinagreira', nome: 'Vinagreira (Rosela)', categoria: 'pancs', imageUrl: 'https://cdn.pixabay.com/photo/2022/03/31/04/07/rosella-7102161_1280.jpg' },
+  { id: 'peixinho-da-horta', nome: 'Peixinho-da-horta', categoria: 'pancs', imageUrl: 'https://cdn.pixabay.com/photo/2014/10/22/21/02/stachys-wool-498974_960_720.jpg' },
+  { id: 'azedinha', nome: 'Azedinha', categoria: 'pancs', imageUrl: 'https://cdn.pixabay.com/photo/2012/08/11/13/59/meadows-sauerampfer-54054_1280.jpg' },
+  { id: 'capuchinha', nome: 'Capuchinha', categoria: 'pancs', imageUrl: 'https://cdn.pixabay.com/photo/2016/12/29/18/00/tropaeolum-majus-1939046_640.jpg' },
 ];
 
 const PlantasPage = () => {
