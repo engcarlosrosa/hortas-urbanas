@@ -1,0 +1,45 @@
+Sitemap Visual - App Hortas UrbanasEste é um mapa visual da arquitetura de navegação do aplicativo, mostrando a relação hierárquica entre as telas.[ App Hortas Urbanas ]
+└── Fluxo de Usuário Não Autenticado
+    ├── Tela de Boas-Vindas
+    │   ├── [Botão] Entrar ──────────> Tela de Login
+    │   └── [Botão] Inscreva-se ─────> Tela de Cadastro
+    │
+    ├── Tela de Login
+    │   ├── [Link] Esqueceu a senha? -> Tela "Esqueceu a Senha"
+    │   └── [Sucesso] ───────────────> Tela Principal (Menu)
+    │
+    ├── Tela de Cadastro
+    │   └── [Sucesso] ───────────────> Tela Principal (Menu)
+    │
+    └── Fluxo de Redefinição de Senha
+        ├── 1. Tela "Esqueceu a Senha"
+        ├── 2. Tela de Verificação de Código
+        └── 3. Tela de Cadastrar Nova Senha ──> Retorna para a Tela de Login
+
+└── Fluxo de Usuário Autenticado
+    └── Tela Principal (Menu)
+        ├── 5.1. Mapa das Hortas
+        │
+        ├── 5.2. Manutenção de Hortas
+        │   ├── Guia de plantio e cuidados
+        │   ├── Troca de insumos
+        │   └── Cursos e tutoriais
+        │
+        ├── 5.3. Apoie uma Horta
+        │   ├── Participe de uma horta (Formulário)
+        │   ├── Integração com outros Apps
+        │   └── Programas da prefeitura
+        │
+        ├── 5.4. Guia de Plantas
+        │   └── Detalhes da Planta
+        │
+        ├── 5.5. Reportar Terreno Baldio
+        │   └── Meus Envios (Opcional)
+        │
+        ├── 5.6. Agenda de Atividades
+        │
+        ├── Impacto (Tela a definir)
+        │
+        ├── Galeria (Tela a definir)
+        │
+        └── Fórum (Tela a definir)
