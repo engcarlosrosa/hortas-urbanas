@@ -1,10 +1,10 @@
-// Funções dos SDKs que você precisa
+// Importe as funções dos SDKs que você precisa
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
-// A configuração app do Firebase
+// A configuração do seu app da web do Firebase
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
   authDomain: import.meta.env.VITE_AUTH_DOMAIN,
@@ -15,10 +15,10 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_MEASUREMENT_ID
 };
 
-// Inicializando o Firebase
+// Inicialize o Firebase
 const app = initializeApp(firebaseConfig);
 
-// Exportando as funções para os serviços que iremos usar em outras partes do seu projeto
+// Exporte os serviços que você irá usar em outras partes do seu projeto
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
