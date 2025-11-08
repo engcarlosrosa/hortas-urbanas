@@ -8,7 +8,7 @@ import { Header, Footer } from "./components/UIKit.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
-import MapPage from "./pages/MapPage.jsx";
+import MapPage from "./pages/MapPage.jsx"; // <-- Rota do Abel
 
 // Páginas (Semana 2 - Formulários e Comunidade)
 import ReportarTerrenoPage from "./pages/ReportarTerrenoPage.jsx";
@@ -16,7 +16,7 @@ import ApoieUmaHortaPage from "./pages/ApoieUmaHortaPage.jsx";
 import AgendaPage from "./pages/AgendaPage.jsx";
 import ForumPage from "./pages/ForumPage.jsx";
 
-// Páginas (Semana 2 - Conteúdo e Guias) - ADICIONADAS
+// Páginas (Semana 2 - Conteúdo e Guias)
 import ManutencaoPage from './pages/ManutencaoPage.jsx';
 import GuiaDetailPage from './pages/GuiaDetailPage.jsx';
 import PlantasPage from './pages/PlantasPage.jsx';
@@ -36,7 +36,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/cadastro" element={<RegisterPage />} />
-            <Route path="/mapa" element={<MapPage />} />
+            <Route path="/mapa" element={<MapPage />} /> {/* <-- Rota do Abel INCLUÍDA */}
 
             {/* Rotas da Semana 2 (Formulários e Comunidade) */}
             <Route path="/reportar" element={<ReportarTerrenoPage />} />
@@ -44,7 +44,7 @@ function App() {
             <Route path="/agenda" element={<AgendaPage />} />
             <Route path="/forum" element={<ForumPage />} />
             
-            {/* Rotas de Conteúdo e Guias (ADICIONADAS) */}
+            {/* Rotas de Conteúdo e Guias (Suas rotas INCLUÍDAS) */}
             <Route path="/manutencao" element={<ManutencaoPage />} />
             <Route path="/manutencao/:id" element={<GuiaDetailPage />} />
             <Route path="/plantas" element={<PlantasPage />} />

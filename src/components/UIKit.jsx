@@ -39,15 +39,13 @@ export const Header = () => (
           </Link>
         </div>
         
-        {/* Links de Navegação (Desktop) */}
+        {/* Links de Navegação (Desktop) - VERSÃO JUNTA */}
         <div className="hidden md:block">
           <div className="ml-10 flex items-baseline space-x-4">
             <NavItem to="/">Home</NavItem>
-            <NavItem to="/mapa">Mapa</NavItem>
-            {/* LINKS ADICIONADOS */}
-            <NavItem to="/plantas">Plantas</NavItem>
-            <NavItem to="/manutencao">Manutenção</NavItem>
-            {/* FIM DOS LINKS ADICIONADOS */}
+            <NavItem to="/mapa">Mapa</NavItem> {/* <-- Link do Abel */}
+            <NavItem to="/plantas">Plantas</NavItem> {/* <-- Seu link */}
+            <NavItem to="/manutencao">Manutenção</NavItem> {/* <-- Seu link */}
             <NavItem to="/forum">Fórum</NavItem>
             <NavItem to="/agenda">Agenda</NavItem>
             <NavItem to="/reportar">Reportar Terreno</NavItem>
@@ -80,32 +78,20 @@ export const Footer = () => (
 );
 
 // --- Componentes de UI Reutilizáveis ---
+// (O resto do ficheiro - Card, PageTitle, Button, Input, etc. - continua igual)
 
-/**
- * Card
- * Um contentor genérico com sombra e cantos arredondados.
- */
 export const Card = ({ children, className = "" }) => (
   <div className={`bg-gray-800 shadow-lg rounded-xl p-6 md:p-8 ${className}`}>
     {children}
   </div>
 );
 
-/**
- * PageTitle
- * Um H1 estilizado para títulos de página.
- */
 export const PageTitle = ({ children }) => (
   <h1 className="text-3xl font-bold text-center text-green-400 mb-6">
     {children}
   </h1>
 );
 
-/**
- * Button
- * Botão customizável com variantes de estilo.
- * Aceita a prop 'as' para se transformar num Link (ex: as={Link}).
- */
 export const Button = ({ as: Component = "button", children, variant = "primary", className = "", ...props }) => {
   const baseStyle = "px-4 py-2 rounded-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed";
   
@@ -122,10 +108,6 @@ export const Button = ({ as: Component = "button", children, variant = "primary"
   );
 };
 
-/**
- * Input
- * Campo de texto padrão para formulários.
- */
 export const Input = ({ className = "", ...props }) => (
   <input
     className={`w-full px-4 py-3 bg-gray-700 text-white border border-gray-600 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent ${className}`}
@@ -133,12 +115,6 @@ export const Input = ({ className = "", ...props }) => (
   />
 );
 
-// --- NOVOS COMPONENTES (Para Semana 2) ---
-
-/**
- * Textarea (NOVO)
- * Campo de texto de múltiplas linhas para descrições.
- */
 export const Textarea = ({ className = "", ...props }) => (
   <textarea
     className={`w-full px-4 py-3 bg-gray-700 text-white border border-gray-600 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent ${className}`}
@@ -146,10 +122,6 @@ export const Textarea = ({ className = "", ...props }) => (
   />
 );
 
-/**
- * FileInput (NOVO)
- * Campo estilizado para upload de ficheiros.
- */
 export const FileInput = ({ className = "", onChange, disabled }) => (
   <input
     type="file"
