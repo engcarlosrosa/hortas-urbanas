@@ -1,32 +1,33 @@
-// Importa as instâncias 'storage' e 'auth' do teu ficheiro de configuração
-import { storage, auth } from './firebaseConfig.js';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { 
+  getStorage, 
+  ref, 
+  uploadBytes, 
+  getDownloadURL 
+} from 'firebase/storage';
+import { app } from './firebaseConfig.js'; // Importa o app inicializado
+import { v4 as uuidv4 } from 'uuid'; // Para nomes de arquivo únicos
 
-/**
- * Faz o upload de uma imagem para o Firebase Storage.
- * @param {File} file - O ficheiro de imagem a ser enviado.
- */
-export const uploadImage = async (file) => {
+// 1. Inicializa o Storage
+const storage = getStorage(app);
+
+// 2. Função de Upload
+export const uploadImage = async (file, path) => {
+  // 3. Cria um nome de arquivo único
+  // ex: 'terrenos/algum-id-aleatorio.jpg'
+  const extensao = file.name.split('.').pop();
+  const nomeArquivo = `${uuidv4()}.${extensao}`;
+  const storageRef = ref(storage, `${path}/${nomeArquivo}`);
+
   try {
-    const userId = auth.currentUser?.uid;
-    if (!userId) throw new Error("Utilizador não autenticado para fazer upload");
-
-    // Cria um nome de ficheiro único para evitar sobreposições
-    // Ex: relatorios/USER_ID/TIMESTAMP_FILENAME
-    const uniqueFileName = `${Date.now()}_${file.name}`;
-    const storageRef = ref(storage, `relatorios/${userId}/${uniqueFileName}`);
-
-    // Faz o upload do ficheiro
+    // 4. Faz o upload do arquivo
     const snapshot = await uploadBytes(storageRef, file);
     
-    // Obtém o URL de download da imagem
+    // 5. Pega a URL pública do arquivo
     const downloadURL = await getDownloadURL(snapshot.ref);
     
-    console.log("Ficheiro enviado com sucesso! URL:", downloadURL);
     return downloadURL;
-
   } catch (error) {
-    console.error("Erro no upload da imagem: ", error);
-    throw error;
+    console.error("Erro no upload da imagem:", error);
+    throw new Error("Falha ao fazer upload da imagem.");
   }
 };

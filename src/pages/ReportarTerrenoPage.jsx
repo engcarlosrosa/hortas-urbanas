@@ -1,55 +1,69 @@
 import React, { useState } from "react";
 import { Card, Input, Button, Textarea, FileInput, PageTitle } from "../components/UIKit.jsx";
-// Importaremos os serviços quando estiverem prontos
-// import { submitReport } from "../services/firestoreService.js";
-// import { uploadImage } from "../services/storageService.js";
+// --- NOVAS IMPORTAÇÕES ---
+import { useAuth } from "../context/AuthContext.jsx";
+import { criarRelatorioTerreno } from "../services/firestoreService.js";
+import { uploadImage } from "../services/storageService.js";
+// --- FIM DAS NOVAS IMPORTAÇÕES ---
 
 const ReportarTerrenoPage = () => {
+  const { currentUser } = useAuth(); // Pega o usuário logado
+  
   const [titulo, setTitulo] = useState("");
   const [descricao, setDescricao] = useState("");
   const [endereco, setEndereco] = useState("");
-  const [imagem, setImagem] = useState(null);
+  const [imagem, setImagem] = useState(null); // Vai guardar o ARQUIVO
   const [loading, setLoading] = useState(false);
   const [mensagem, setMensagem] = useState("");
+  const [error, setError] = useState(""); // Estado de erro separado
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!titulo || !descricao || !endereco || !imagem) {
-      setMensagem("Por favor, preencha todos os campos e selecione uma imagem.");
+    setMensagem("");
+    setError("");
+
+    // 1. Validações
+    if (!currentUser) {
+      setError("Você precisa estar logado para reportar um terreno.");
       return;
     }
+    if (!titulo || !descricao || !endereco || !imagem) {
+      setError("Por favor, preencha todos os campos e selecione uma imagem.");
+      return;
+    }
+
     setLoading(true);
     setMensagem("Enviando...");
 
     try {
-      // 1. Fazer o upload da imagem para o Storage
-      // const imageUrl = await uploadImage(imagem);
+      // 2. Fazer o upload da imagem para o Storage
+      setMensagem("A fazer upload da imagem...");
+      const imageUrl = await uploadImage(imagem, 'terrenos'); // Salva na pasta 'terrenos'
 
-      // 2. Criar o objeto do relatório
+      // 3. Criar o objeto do relatório
       const relatorio = {
         titulo,
         descricao,
         endereco,
-        // imageUrl,
-        status: 'pendente',
-        criadoEm: new Date(),
+        imageUrl, // A URL que o Storage nos deu
       };
 
-      // 3. Enviar o relatório para o Firestore
-      // await submitReport(relatorio);
+      // 4. Enviar o relatório para o Firestore
+      setMensagem("A salvar o relatório...");
+      await criarRelatorioTerreno(currentUser.uid, relatorio);
 
-      // 4. Limpar o formulário e dar feedback
+      // 5. Limpar o formulário e dar feedback
       setMensagem("Relatório enviado com sucesso! Obrigado por contribuir.");
       setTitulo("");
       setDescricao("");
       setEndereco("");
       setImagem(null);
-      // Limpar o input de ficheiro (isto é complexo, pode ser feito com uma 'key')
-      e.target.reset(); 
+      e.target.reset(); // Limpa o input de ficheiro
 
     } catch (error) {
       console.error("Erro ao enviar relatório:", error);
-      setMensagem("Erro ao enviar o seu relatório. Tente novamente.");
+      setError("Erro ao enviar o seu relatório. Tente novamente.");
+      setMensagem(""); // Limpa a mensagem de "Enviando..."
     } finally {
       setLoading(false);
     }
@@ -58,6 +72,7 @@ const ReportarTerrenoPage = () => {
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
       setImagem(e.target.files[0]);
+      setError(""); // Limpa o erro se o usuário corrigir
     }
   };
 
@@ -99,9 +114,15 @@ const ReportarTerrenoPage = () => {
         </Button>
       </form>
 
+      {/* Mensagens de Feedback */}
       {mensagem && (
-        <p className={`mt-4 text-center ${mensagem.includes("sucesso") ? "text-green-400" : "text-red-400"}`}>
+        <p className="mt-4 text-center text-green-400">
           {mensagem}
+        </p>
+      )}
+      {error && (
+         <p className="mt-4 text-center text-red-400">
+          {error}
         </p>
       )}
     </Card>

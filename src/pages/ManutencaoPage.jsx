@@ -1,27 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react'; // <-- Importar hooks
 import { Link } from 'react-router-dom';
 import { Card, PageTitle } from '../components/UIKit.jsx';
+import { getGuias } from '../services/firestoreService.js'; // <-- Importar do Firestore
 
-// Dados mocados (substituir pelo Firestore depois)
-const mockGuias = [
-  {
-    id: 'principios-basicos',
-    titulo: 'Princípios Básicos de Cultivo',
-    descricaoCurta: 'Aprenda sobre solo, iluminação e rega para começar sua horta com o pé direito.',
-  },
-  {
-    id: 'compostagem-caseira',
-    titulo: 'Compostagem Caseira',
-    descricaoCurta: 'Descubra como transformar seus resíduos orgânicos em adubo rico para suas plantas.',
-  },
-  {
-    id: 'controle-pragas',
-    titulo: 'Controle Natural de Pragas',
-    descricaoCurta: 'Mantenha sua horta saudável sem usar químicos, usando receitas caseiras e defensivos naturais.',
-  },
-];
+// Dados mocados (REMOVIDOS)
 
 const ManutencaoPage = () => {
+  // --- NOVOS ESTADOS ---
+  const [guias, setGuias] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // --- NOVO EFEITO PARA BUSCAR DADOS ---
+  useEffect(() => {
+    const fetchGuias = async () => {
+      try {
+        setLoading(true);
+        const dados = await getGuias();
+        setGuias(dados);
+      } catch (error) {
+        console.error("Erro ao buscar guias:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGuias();
+  }, []); // Array vazio [] significa que roda 1x
+  // --- FIM DA NOVA SEÇÃO ---
+
   return (
     <div className="w-full max-w-4xl mx-auto">
       <PageTitle>Manutenção de Hortas</PageTitle>
@@ -30,9 +36,19 @@ const ManutencaoPage = () => {
       </p>
       
       <div className="space-y-6">
-        {mockGuias.map((guia) => (
+        {/* --- LÓGICA DE RENDERIZAÇÃO ATUALIZADA --- */}
+        {loading && (
+          <p className="text-gray-400 text-center">Carregando guias...</p>
+        )}
+        
+        {!loading && guias.length === 0 && (
+           <p className="text-gray-400 text-center">Nenhum guia encontrado.</p>
+        )}
+
+        {guias.map((guia) => (
           <Link to={`/manutencao/${guia.id}`} key={guia.id} className="block hover:shadow-lg transition-shadow duration-200">
             <Card className="hover:bg-gray-700 transition-colors duration-200">
+              {/* Usar os nomes dos campos do Firestore */}
               <h3 className="text-xl font-bold text-green-400 mb-2">{guia.titulo}</h3>
               <p className="text-gray-300">{guia.descricaoCurta}</p>
             </Card>

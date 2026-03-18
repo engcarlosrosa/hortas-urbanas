@@ -1,99 +1,176 @@
-// Importa as instâncias 'db' e 'auth' do teu ficheiro de configuração
-import { db, auth } from './firebaseConfig.js';
-import { collection, addDoc, getDocs, query, orderBy, Timestamp } from 'firebase/firestore';
+// Em: src/services/firestoreService.js
 
-/**
- * Envia um relatório de terreno baldio para o Firestore.
- * @param {object} relatorio - O objeto com os dados do relatório.
- */
-export const submitReport = async (relatorio) => {
-  try {
-    // Vamos assumir que os relatórios são públicos ou semi-públicos
-    // Se fossem privados do utilizador, usariamos o ID do utilizador no caminho
-    // const userId = auth.currentUser?.uid;
-    // if (!userId) throw new Error("Utilizador não autenticado");
+// Importa o 'db' (a base de dados) do nosso config
+import { db } from './firebaseConfig.js';
+// Importa as funções do Firestore que vamos usar
+import { 
+  collection, 
+  addDoc,
+  serverTimestamp, // <-- IMPORTANTE: Para a data correta
+  query,            // <-- NOVO: Para criar consultas
+  orderBy,          // <-- NOVO: Para ordenar os resultados
+  onSnapshot,        // <-- NOVO: Para escutar em tempo real
+  getDocs,  // <-- NOVO: Para buscar uma lista 1x
+  getDoc,   // <-- NOVO: Para buscar 1 documento 1x
+  doc,       // <-- NOVO: Para referenciar um documento
+  deleteDoc  // <-- NOVO: Para deletar um documento
+} from 'firebase/firestore';
 
-    const relatoriosCollection = collection(db, 'relatorios');
-    const docRef = await addDoc(relatoriosCollection, {
-      ...relatorio,
-      // Garante que a data é guardada no formato do Firestore
-      criadoEm: Timestamp.fromDate(relatorio.criadoEm), 
-    });
-    console.log("Relatório enviado com ID: ", docRef.id);
-    return docRef.id;
-  } catch (error) {
-    console.error("Erro ao submeter relatório: ", error);
-    throw error;
-  }
+// --- FUNÇÕES REAIS DO FIRESTORE ---
+
+export const criarPost = (uid, emailUsuario, texto) => {
+  // 1. Aponta para a "coleção" (gaveta) 'posts'
+  const postsCollectionRef = collection(db, 'posts');
+  
+  // 2. Adiciona um novo "documento" (ficheiro) nessa gaveta
+  return addDoc(postsCollectionRef, {
+    uid: uid,
+    autorEmail: emailUsuario,
+    texto: texto,
+    criadoEm: serverTimestamp() // <-- MUDADO: Usar a data do servidor
+  });
 };
 
-/**
- * Envia um formulário de voluntariado.
- * @param {object} formulario - O objeto com os dados do formulário.
- */
-export const submitVolunteering = async (formulario) => {
-  try {
-    const formulariosCollection = collection(db, 'formularios');
-    const docRef = await addDoc(formulariosCollection, {
-      ...formulario,
-      criadoEm: Timestamp.fromDate(formulario.criadoEm),
-    });
-    console.log("Formulário enviado com ID: ", docRef.id);
-    return docRef.id;
-  } catch (error) {
-    console.error("Erro ao submeter formulário: ", error);
-    throw error;
-  }
-};
+// --- NOVA FUNÇÃO PARA LER OS POSTS ---
+export const getPostsSnapshot = (callback) => {
+  // 1. Aponta para a coleção 'posts'
+  const postsCollectionRef = collection(db, 'posts');
 
-/**
- * Adiciona um novo post ao fórum.
- * @param {object} post - O objeto do post.
- */
-export const addPost = async (post) => {
-  try {
-    const userId = auth.currentUser?.uid;
-    const displayName = auth.currentUser?.displayName || "Anónimo";
+  // 2. Cria uma consulta para ordenar os posts (do mais novo para o mais antigo)
+  const q = query(postsCollectionRef, orderBy('criadoEm', 'desc'));
 
-    if (!userId) throw new Error("Utilizador não autenticado para publicar");
-
-    const postsCollection = collection(db, 'forumPosts');
-    const docRef = await addDoc(postsCollection, {
-      ...post,
-      autorId: userId,
-      autorNome: displayName,
-      criadoEm: Timestamp.fromDate(post.data), // Usa a data passada ou new Date()
-    });
-    return docRef.id;
-  } catch (error) {
-    console.error("Erro ao adicionar post: ", error);
-    throw error;
-  }
-};
-
-/**
- * Busca os posts mais recentes do fórum.
- */
-export const getPosts = async () => {
-  try {
-    const postsCollection = collection(db, 'forumPosts');
-    // Cria uma query para ordenar os posts por data, dos mais recentes para os mais antigos
-    const q = query(postsCollection, orderBy('criadoEm', 'desc'));
-    
-    const querySnapshot = await getDocs(q);
+  // 3. Escuta a consulta em tempo real
+  const unsubscribe = onSnapshot(q, (querySnapshot) => {
     const posts = [];
     querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      posts.push({
-        id: doc.id,
-        ...data,
-        // Converte o Timestamp do Firestore de volta para um objeto Date do JS
-        data: data.criadoEm.toDate(), 
-      });
+      // Adiciona o post E o seu ID
+      posts.push({ id: doc.id, ...doc.data() });
     });
-    return posts;
-  } catch (error) {
-    console.error("Erro ao buscar posts: ", error);
-    throw error;
+    // 4. Envia os posts de volta para o componente
+    callback(posts);
+  });
+
+  // 5. Retorna a função 'unsubscribe' (para parar de escutar)
+  return unsubscribe;
+};
+
+export const deletePost = (id) => {
+  // Cria uma referência direta ao documento do post
+  const postDocRef = doc(db, 'posts', id);
+  // Deleta o documento
+  return deleteDoc(postDocRef);
+};
+
+// --- NOVAS FUNÇÕES PARA GUIAS ---
+
+// Função para buscar a LISTA de todos os guias
+export const getGuias = async () => {
+  const guiasCollectionRef = collection(db, 'guias');
+  const querySnapshot = await getDocs(guiasCollectionRef);
+  
+  const guias = [];
+  querySnapshot.forEach((doc) => {
+    // Adiciona o guia E o seu ID
+    guias.push({ id: doc.id, ...doc.data() });
+  });
+  
+  return guias;
+};
+
+// Função para buscar UM guia específico pelo seu ID
+export const getGuiaById = async (id) => {
+  // 1. Cria uma referência direta ao documento
+  const docRef = doc(db, 'guias', id);
+  // 2. Busca esse documento
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    // 3. Se existir, retorna os dados
+    return docSnap.data();
+  } else {
+    // 4. Se não, joga um erro
+    console.error("Guia não encontrado!");
+    throw new Error("Documento não encontrado");
   }
 };
+
+// --- NOVAS FUNÇÕES PARA PLANTAS ---
+
+// Função para buscar a LISTA de todas as plantas
+export const getPlantas = async () => {
+  const plantasCollectionRef = collection(db, 'plantas');
+  // Nota: Você pode querer adicionar um orderBy('nome', 'asc') aqui
+  const querySnapshot = await getDocs(plantasCollectionRef);
+  
+  const plantas = [];
+  querySnapshot.forEach((doc) => {
+    plantas.push({ id: doc.id, ...doc.data() });
+  });
+  
+  return plantas;
+};
+
+// Função para buscar UMA planta específica pelo seu ID
+export const getPlantaById = async (id) => {
+  const docRef = doc(db, 'plantas', id);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return { id: docSnap.id, ...docSnap.data() }; // Retorna com o ID
+  } else {
+    console.error("Planta não encontrada!");
+    throw new Error("Documento não encontrado");
+  }
+};
+
+// --- NOVA FUNÇÃO PARA REPORTAR TERRENO ---
+
+export const criarRelatorioTerreno = (uid, relatorio) => {
+  // O relatorio já vem com: { titulo, descricao, endereco, imageUrl }
+  const terrenosCollectionRef = collection(db, 'terrenos');
+  
+  return addDoc(terrenosCollectionRef, {
+    ...relatorio,
+    autorUid: uid,
+    status: 'pendente', // Status inicial
+    criadoEm: serverTimestamp() 
+  });
+};
+
+// --- NOVA FUNÇÃO PARA ENVIAR VOLUNTARIADO ---
+
+export const enviarVoluntariado = (uid, dadosVoluntario) => {
+  // dadosVoluntario já vem com: { nome, email, motivo }
+  const voluntariosCollectionRef = collection(db, 'voluntarios');
+  
+  return addDoc(voluntariosCollectionRef, {
+    ...dadosVoluntario,
+    autorUid: uid,
+    status: 'pendente', // Status inicial
+    criadoEm: serverTimestamp() 
+  });
+};
+// --- NOVA FUNÇÃO PARA BUSCAR TERRENOS REPORTADOS ---
+export const getTerrenos = async () => {
+  const terrenosCollectionRef = collection(db, 'terrenos');
+  const querySnapshot = await getDocs(terrenosCollectionRef);
+  
+  const terrenos = [];
+  querySnapshot.forEach((doc) => {
+    terrenos.push({ id: doc.id, ...doc.data() });
+  });
+  
+  return terrenos;
+};
+// --- DADOS MOCADOS (Para Guias e Plantas) ---
+// (O resto do seu arquivo continua igual)
+
+const mockGuias = [
+  // ... (seus dados mocados)
+];
+// ... (todas as suas outras funções mocadas) ...
+export const getMockGuias = () => mockGuias;
+export const getMockGuiaById = (id) => mockGuiasDB[id];
+export const getMockCategorias = () => categorias;
+export const getMockPlantas = () => mockPlantasCompleto;
+export const getMockPlantaById = (id) => mockPlantasDBCompleto[id];

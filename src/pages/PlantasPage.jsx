@@ -1,55 +1,49 @@
-import React from 'react';
+// Em: src/pages/PlantasPage.jsx
+
+import React, { useState, useEffect } from 'react'; // <-- Importar hooks
 import { Link } from 'react-router-dom';
 import { Card, PageTitle } from '../components/UIKit.jsx';
+import { getPlantas } from '../services/firestoreService.js'; // <-- Importar do Firestore
 
-// Dados mocados (com URLs do Pexels/Pixabay como instruído)
-const categorias = [
-  { id: 'frutas', nome: 'Frutas' },
-  { id: 'legumes', nome: 'Legumes' },
-  { id: 'ervas', nome: 'Ervas Medicinais' },
-  { id: 'temperos', nome: 'Temperos' },
-  { id: 'pancs', nome: 'PANCs' },
-];
-
-const mockPlantasCompleto = [
-  // Frutas
-  { id: 'banana', nome: 'Banana', categoria: 'frutas', imageUrl: 'https://images.pexels.com/photos/2280926/pexels-photo-2280926.jpeg?auto=compress&cs=tinysrgb&w=600' },
-  { id: 'melancia', nome: 'Melancia', categoria: 'frutas', imageUrl: 'https://images.pexels.com/photos/1313267/pexels-photo-1313267.jpeg?auto=compress&cs=tinysrgb&w=600' },
-  { id: 'abacaxi', nome: 'Abacaxi', categoria: 'frutas', imageUrl: 'https://images.pexels.com/photos/28353017/pexels-photo-28353017.jpeg?auto=compress&cs=tinysrgb&w=600' },
-  { id: 'mamao', nome: 'Mamão Papaya', categoria: 'frutas', imageUrl: 'https://images.pexels.com/photos/10869540/pexels-photo-10869540.jpeg?auto=compress&cs=tinysrgb&w=600' },
-  { id: 'laranja', nome: 'Laranja', categoria: 'frutas', imageUrl: 'https://images.pexels.com/photos/161559/background-bitter-breakfast-bright-161559.jpeg?auto=compress&cs=tinysrgb&w=600' },
-  { id: 'morango', nome: 'Morango', categoria: 'frutas', imageUrl: 'https://images.pexels.com/photos/1788912/pexels-photo-1788912.jpeg?auto=compress&cs=tinysrgb&w=600' },
-  // Legumes
-  { id: 'cenoura', nome: 'Cenoura', categoria: 'legumes', imageUrl: 'https://images.pexels.com/photos/1306559/pexels-photo-1306559.jpeg?auto=compress&cs=tinysrgb&w=600' },
-  { id: 'beterraba', nome: 'Beterraba', categoria: 'legumes', imageUrl: 'https://images.pexels.com/photos/29436276/pexels-photo-29436276.jpeg?auto=compress&cs=tinysrgb&w=600' },
-  { id: 'abobrinha', nome: 'Abobrinha', categoria: 'legumes', imageUrl: 'https://images.pexels.com/photos/34476508/pexels-photo-34476508.jpeg?auto=compress&cs=tinysrgb&w=600' },
-  { id: 'batata-doce', nome: 'Batata Doce', categoria: 'legumes', imageUrl: 'https://images.pexels.com/photos/7456548/pexels-photo-7456548.jpeg?auto=compress&cs=tinysrgb&w=600' },
-  { id: 'berinjela', nome: 'Berinjela', categoria: 'legumes', imageUrl: 'https://images.pexels.com/photos/5529605/pexels-photo-5529605.jpeg?auto=compress&cs=tinysrgb&w=600' },
-  { id: 'pimentao', nome: 'Pimentão', categoria: 'legumes', imageUrl: 'https://images.pexels.com/photos/2893635/pexels-photo-2893635.jpeg?auto=compress&cs=tinysrgb&w=600' },
-  // Ervas Medicinais
-  { id: 'anis-estrelado', nome: 'Anis-estrelado', categoria: 'ervas', imageUrl: 'https://images.pexels.com/photos/30112806/pexels-photo-30112806.jpeg?auto=compress&cs=tinysrgb&w=600' },
-  { id: 'erva-doce', nome: 'Erva-doce', categoria: 'ervas', imageUrl: 'https://images.pexels.com/photos/6045502/pexels-photo-6045502.jpeg?auto=compress&cs=tinysrgb&w=600' },
-  { id: 'boldo', nome: 'Boldo', categoria: 'ervas', imageUrl: 'https://images.pexels.com/photos/4098469/pexels-photo-4098469.jpeg?auto=compress&cs=tinysrgb&w=600' },
-  { id: 'capim-limao', nome: 'Capim-limão', categoria: 'ervas', imageUrl: 'https://cdn.pixabay.com/photo/2014/02/23/05/54/cymbopogon-272641_1280.jpg' },
-  { id: 'salvia', nome: 'Sálvia', categoria: 'ervas', imageUrl: 'https://images.pexels.com/photos/33209626/pexels-photo-33209626.jpeg?auto=compress&cs=tinysrgb&w=600' },
-  { id: 'erva-cidreira', nome: 'Erva-cidreira', categoria: 'ervas', imageUrl: 'https://cdn.pixabay.com/photo/2020/05/25/13/43/melissa-5218673_1280.jpg' },
-  // Temperos
-  { id: 'cebolinha', nome: 'Cebolinha', categoria: 'temperos', imageUrl: 'https://cdn.pixabay.com/photo/2013/12/13/23/22/winter-onion-228039_1280.jpg' },
-  { id: 'salsa', nome: 'Salsa', categoria: 'temperos', imageUrl: 'https://cdn.pixabay.com/photo/2018/06/03/13/09/parsley-3450411_1280.jpg' },
-  { id: 'manjericao', nome: 'Manjericão', categoria: 'temperos', imageUrl: 'https://cdn.pixabay.com/photo/2016/03/10/18/44/top-view-1248955_1280.jpg' },
-  { id: 'hortela', nome: 'Hortelã', categoria: 'temperos', imageUrl: 'https://cdn.pixabay.com/photo/2017/06/12/19/23/moroccan-mint-2396530_1280.jpg' },
-  { id: 'louro', nome: 'Louro', categoria: 'temperos', imageUrl: 'https://cdn.pixabay.com/photo/2017/09/23/19/24/laurel-2779880_1280.jpg' },
-  { id: 'alecrim', nome: 'Alecrim', categoria: 'temperos', imageUrl: 'https://cdn.pixabay.com/photo/2020/06/04/14/52/rosemary-5259098_1280.jpg' },
-  // PANCs
-  { id: 'taioba', nome: 'Taioba', categoria: 'pancs', imageUrl: 'https://cdn.pixabay.com/photo/2021/10/20/12/46/elephants-ears-6725939_1280.jpg' },
-  { id: 'ora-pro-nobis', nome: 'Ora-pro-nóbis', categoria: 'pancs', imageUrl: 'https://cdn.pixabay.com/photo/2022/11/15/14/32/flower-7594101_1280.jpg' },
-  { id: 'vinagreira', nome: 'Vinagreira (Rosela)', categoria: 'pancs', imageUrl: 'https://cdn.pixabay.com/photo/2022/03/31/04/07/rosella-7102161_1280.jpg' },
-  { id: 'peixinho-da-horta', nome: 'Peixinho-da-horta', categoria: 'pancs', imageUrl: 'https://cdn.pixabay.com/photo/2014/10/22/21/02/stachys-wool-498974_960_720.jpg' },
-  { id: 'azedinha', nome: 'Azedinha', categoria: 'pancs', imageUrl: 'https://cdn.pixabay.com/photo/2012/08/11/13/59/meadows-sauerampfer-54054_1280.jpg' },
-  { id: 'capuchinha', nome: 'Capuchinha', categoria: 'pancs', imageUrl: 'https://cdn.pixabay.com/photo/2016/12/29/18/00/tropaeolum-majus-1939046_640.jpg' },
-];
+// Dados mocados (REMOVIDOS)
 
 const PlantasPage = () => {
+  // --- NOVOS ESTADOS ---
+  const [plantas, setPlantas] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // --- NOVO EFEITO PARA BUSCAR DADOS ---
+  useEffect(() => {
+    const fetchPlantas = async () => {
+      try {
+        setLoading(true);
+        const dados = await getPlantas();
+        setPlantas(dados);
+      } catch (error) {
+        console.error("Erro ao buscar plantas:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPlantas();
+  }, []);
+
+  // --- LÓGICA DINÂMICA DE AGRUPAMENTO ---
+  // 1. Agrupa as plantas por categoria
+  const plantasPorCategoria = plantas.reduce((acc, planta) => {
+    const categoria = planta.categoria || 'Outros'; // Pega a categoria
+    if (!acc[categoria]) {
+      acc[categoria] = []; // Cria o array se não existir
+    }
+    acc[categoria].push(planta);
+    return acc;
+  }, {});
+
+  // 2. Obtém os nomes das categorias ordenados
+  const categoriasOrdenadas = Object.keys(plantasPorCategoria).sort();
+  // --- FIM DA NOVA SEÇÃO DE LÓGICA ---
+
   return (
     <div>
       <PageTitle>Tipos de Plantas</PageTitle>
@@ -57,50 +51,46 @@ const PlantasPage = () => {
         Explore as frutas, legumes, hortaliças e temperos que você pode cultivar.
       </p>
 
-      <div className="space-y-12">
-        {/* Itera sobre as CATEGORIAS */}
-        {categorias.map((categoria) => {
-          // Filtra as plantas para cada categoria
-          const plantasDaCategoria = mockPlantasCompleto.filter(
-            (planta) => planta.categoria === categoria.id
-          );
+      {/* --- RENDERIZAÇÃO ATUALIZADA --- */}
+      {loading && (
+        <p className="text-gray-400 text-center">Carregando plantas...</p>
+      )}
 
-          return (
-            <section key={categoria.id}>
-              {/* Subtítulo da Categoria */}
-              <h2 className="text-3xl font-bold text-green-400 mb-6 border-b-2 border-green-700 pb-2">
-                {categoria.nome}
-              </h2>
-              
-              {/* Grid de cards, seguindo o layout do protótipo */}
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {plantasDaCategoria.map((planta) => (
-                  <Link to={`/plantas/${planta.id}`} key={planta.id}>
-                    {/* O Card do UIKit não tem imagem, então usamos Card como wrapper */}
-                    <Card className="p-0 overflow-hidden hover:bg-gray-700 transition-colors duration-200 h-full flex flex-col">
-                      <img 
-                        src={planta.imageUrl} 
-                        alt={planta.nome}
-                        className="w-full h-40 object-cover" // Imagem no topo
-                      />
-                      <div className="p-4 flex-grow">
-                        <h3 className="text-lg font-bold text-white">{planta.nome}</h3>
-                      </div>
-                    </Card>
-                  </Link>
-                ))}
-              </div>
-            </section>
-          );
-        })}
+      {!loading && plantas.length === 0 && (
+         <p className="text-gray-400 text-center">Nenhuma planta cadastrada.</p>
+      )}
+
+      <div className="space-y-12">
+        {/* Itera sobre as CATEGORIAS encontradas */}
+        {categoriasOrdenadas.map((categoriaNome) => (
+          <section key={categoriaNome}>
+            {/* Subtítulo da Categoria */}
+            <h2 className="text-3xl font-bold text-green-400 mb-6 border-b-2 border-green-700 pb-2">
+              {categoriaNome}
+            </h2>
+            
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {/* Itera sobre as plantas DESSA categoria */}
+              {plantasPorCategoria[categoriaNome].map((planta) => (
+                <Link to={`/plantas/${planta.id}`} key={planta.id}>
+                  <Card className="p-0 overflow-hidden hover:bg-gray-700 transition-colors duration-200 h-full flex flex-col">
+                    <img 
+                      src={planta.imageUrl} 
+                      alt={planta.nome}
+                      className="w-full h-40 object-cover"
+                    />
+                    <div className="p-4 flex-grow">
+                      <h3 className="text-lg font-bold text-white">{planta.nome}</h3>
+                    </div>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          </section>
+        ))}
       </div>
     </div>
   );
 };
 
 export default PlantasPage;
-
-
-
-
-
