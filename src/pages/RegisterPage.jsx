@@ -6,6 +6,7 @@ import { cadastrarUsuario } from '../services/authService.js';
 const RegisterPage = () => {
   const [nome, setNome] = useState(''); // <-- 1. NOVO ESTADO
   const [email, setEmail] = useState('');
+  const [role, setRole] = useState('standard');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null); 
   const navigate = useNavigate(); 
@@ -21,8 +22,8 @@ const RegisterPage = () => {
     }
 
     try {
-      // 3. ENVIAR OS 3 DADOS
-      await cadastrarUsuario(email, password, nome);
+      // 3. ENVIAR OS 4 DADOS
+      await cadastrarUsuario(email, password, nome, role);
       navigate('/'); // Sucesso! Vai para a Home.
     } catch (error) {
       console.error("Erro ao cadastrar:", error);
@@ -65,6 +66,25 @@ const RegisterPage = () => {
             <p className="text-red-400 text-sm text-center">{error}</p>
           )}
 
+          {/* --- 5. NOVO CAMPO DE SELEÇÃO DE ROLE --- */}
+          <div className="space-y-2">
+            <label className="text-sm text-gray-400">Área de Atuação / Interesse:</label>
+            <select 
+              value={role} 
+              onChange={(e) => setRole(e.target.value)}
+              className="w-full px-4 py-3 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:border-green-500"
+            >
+              <option value="standard">Simpatizante (Visualizador)</option>
+              <option value="cultivador">Cultivador (Hortelão)</option>
+              <option value="biologicas">Especialista: Biológicas</option>
+              <option value="negocios">Especialista: Negócios / ESG</option>
+              <option value="direito">Especialista: Direito</option>
+            </select>
+            {role !== 'standard' && (
+              <p className="text-xs text-yellow-400 italic">* Perfis de especialista aguardam aprovação do admin.</p>
+            )}
+          </div>
+          
           <Button type="submit" variant="primary" className="w-full">
             Criar Conta
           </Button>

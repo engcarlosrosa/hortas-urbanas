@@ -46,67 +46,75 @@ const MobileNavItem = ({ to, children, onClick }) => (
 
 /**
  * Header (Cabeçalho)
- * Agora com suporte a Menu Mobile (Hambúrguer).
  */
 export const Header = () => {
   const { currentUser, logout } = useAuth();
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // Estado para controlar o menu
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <header className="bg-gray-800 shadow-md sticky top-0 z-50">
+    <header className="bg-gray-800 shadow-lg border-b border-gray-700 sticky top-0 z-50">
       <nav className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link to="/" className="text-2xl font-bold text-white">
+            <Link to="/" className="text-xl font-bold text-white flex items-center gap-2">
+              <span className="bg-green-600 px-2 py-1 rounded text-sm">H</span>
               Hortas Urbanas
             </Link>
           </div>
           
-          {/* --- MENU DESKTOP (Escondido em telas pequenas) --- */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
+          {/* MENU DESKTOP */}
+          <div className="hidden xl:block">
+            <div className="flex items-baseline space-x-2">
               <NavItem to="/">Home</NavItem>
               <NavItem to="/mapa">Mapa</NavItem>
               <NavItem to="/plantas">Plantas</NavItem>
               <NavItem to="/manutencao">Manutenção</NavItem>
               <NavItem to="/forum">Fórum</NavItem>
               <NavItem to="/agenda">Agenda</NavItem>
-              <NavItem to="/reportar">Reportar Terreno</NavItem>
-              <NavItem to="/apoie">Apoie uma Horta</NavItem>
+              <NavItem to="/reportar">Reportar</NavItem>
+              <NavItem to="/apoie">Apoie</NavItem>
             </div>
           </div>
           
-          {/* Botão de Login Desktop */}
-          <div className="hidden md:block">
+          {/* ÁREA DE USUÁRIO DESKTOP */}
+          <div className="hidden md:flex items-center space-x-4">
+            {currentUser?.role === 'admin' && (
+              <Link 
+                to="/admin/usuarios" 
+                className="text-xs font-bold uppercase tracking-wider bg-yellow-500/10 text-yellow-500 border border-yellow-500/20 px-3 py-1.5 rounded-full hover:bg-yellow-500 hover:text-gray-900 transition-all"
+              >
+                Painel Admin
+              </Link>
+            )}
+
             {currentUser ? (
-              <div className="flex items-center space-x-4">
-                <span className="text-gray-300 text-sm">{currentUser.email}</span>
-                <Button onClick={logout} variant="secondary">Sair</Button>
+              <div className="flex items-center gap-3 pl-4 border-l border-gray-700">
+                <div className="text-right">
+                  <p className="text-xs text-gray-400 leading-none">Olá,</p>
+                  <p className="text-sm font-medium text-white">{currentUser.nome?.split(' ')[0]}</p>
+                </div>
+                <Button onClick={logout} variant="ghost" size="sm" className="text-red-400 hover:text-red-300">
+                  Sair
+                </Button>
               </div>
             ) : (
-              <Button as={Link} to="/login" variant="primary">Login</Button>
+              <Button as={Link} to="/login" variant="primary" size="sm">Entrar</Button>
             )}
           </div>
 
-          {/* --- BOTÃO MENU MOBILE (Hambúrguer) --- */}
-          <div className="-mr-2 flex md:hidden">
-            <button
-              onClick={toggleMenu}
-              type="button"
-              className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-            >
-              <span className="sr-only">Abrir menu principal</span>
-              {/* Ícone do Menu: Muda se estiver aberto ou fechado */}
+          {/* BOTÃO MOBILE */}
+          <div className="flex md:hidden">
+            <button onClick={toggleMenu} className="text-gray-400 hover:text-white p-2">
               {!isMenuOpen ? (
-                <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               ) : (
-                <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               )}
@@ -115,36 +123,24 @@ export const Header = () => {
         </div>
       </nav>
 
-      {/* --- MENU MOBILE (Dropdown) --- */}
+      {/* MENU MOBILE */}
       {isMenuOpen && (
-        <div className="md:hidden bg-gray-900 pb-4 shadow-xl border-t border-gray-700">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <MobileNavItem to="/" onClick={toggleMenu}>Home</MobileNavItem>
-            <MobileNavItem to="/mapa" onClick={toggleMenu}>Mapa</MobileNavItem>
-            <MobileNavItem to="/plantas" onClick={toggleMenu}>Plantas</MobileNavItem>
-            <MobileNavItem to="/manutencao" onClick={toggleMenu}>Manutenção</MobileNavItem>
-            <MobileNavItem to="/forum" onClick={toggleMenu}>Fórum</MobileNavItem>
-            <MobileNavItem to="/agenda" onClick={toggleMenu}>Agenda</MobileNavItem>
-            <MobileNavItem to="/reportar" onClick={toggleMenu}>Reportar Terreno</MobileNavItem>
-            <MobileNavItem to="/apoie" onClick={toggleMenu}>Apoie uma Horta</MobileNavItem>
-          </div>
-          
-          {/* Área de Login Mobile */}
-          <div className="pt-4 pb-3 border-t border-gray-700 px-4">
+        <div className="md:hidden bg-gray-900 border-t border-gray-700 px-4 pt-2 pb-6 space-y-1">
+          <MobileNavItem to="/" onClick={toggleMenu}>Home</MobileNavItem>
+          <MobileNavItem to="/mapa" onClick={toggleMenu}>Mapa</MobileNavItem>
+          {currentUser?.role === 'admin' && (
+            <MobileNavItem to="/admin/usuarios" onClick={toggleMenu}>
+              <span className="text-yellow-500">⭐ Painel Admin</span>
+            </MobileNavItem>
+          )}
+          <div className="pt-4 border-t border-gray-800">
             {currentUser ? (
-              <div className="flex items-center justify-between">
-                <div className="text-base font-medium leading-none text-white">{currentUser.email}</div>
-                <button onClick={() => { logout(); toggleMenu(); }} className="bg-red-600 px-3 py-1 rounded text-white text-sm">
-                  Sair
-                </button>
-              </div>
+              <button onClick={() => { logout(); toggleMenu(); }} className="w-full text-left px-3 py-2 text-red-400 font-medium">
+                Sair ({currentUser.email})
+              </button>
             ) : (
-              <Link 
-                to="/login" 
-                onClick={toggleMenu} 
-                className="block w-full text-center bg-green-600 text-white px-3 py-2 rounded-md text-base font-medium"
-              >
-                Fazer Login
+              <Link to="/login" onClick={toggleMenu} className="block px-3 py-2 bg-green-600 text-white rounded-md text-center">
+                Entrar
               </Link>
             )}
           </div>
@@ -153,7 +149,6 @@ export const Header = () => {
     </header>
   );
 };
-
 /**
  * Footer (Rodapé)
  */

@@ -9,7 +9,8 @@ import {
   serverTimestamp, // <-- IMPORTANTE: Para a data correta
   query,            // <-- NOVO: Para criar consultas
   orderBy,          // <-- NOVO: Para ordenar os resultados
-  onSnapshot,        // <-- NOVO: Para escutar em tempo real
+  onSnapshot,  
+  setDoc,      // <-- NOVO: Para escutar em tempo real
   getDocs,  // <-- NOVO: Para buscar uma lista 1x
   getDoc,   // <-- NOVO: Para buscar 1 documento 1x
   doc,       // <-- NOVO: Para referenciar um documento
@@ -162,6 +163,40 @@ export const getTerrenos = async () => {
   
   return terrenos;
 };
+
+export const criarPerfilUsuario = (uid, nome, email, role) => {
+  const userDocRef = doc(db, 'usuarios', uid);
+  return setDoc(userDocRef, {
+    nome,
+    email,
+    role,
+    // Especialistas começam como 'pendente' até aprovação do Admin
+    status: role === 'standard' ? 'aprovado' : 'pendente',
+    criadoEm: serverTimestamp()
+  });
+};
+
+// --- FUNÇÕES DE ADMINISTRAÇÃO DE USUÁRIOS ---
+
+// Função para buscar todos os usuários (usada na AdminUsersPage)
+export const getTodosUsuarios = async () => {
+  const usuariosRef = collection(db, 'usuarios');
+  const querySnapshot = await getDocs(usuariosRef);
+  const usuarios = [];
+  querySnapshot.forEach((doc) => {
+    usuarios.push({ id: doc.id, ...doc.data() });
+  });
+  return usuarios;
+};
+
+// Função para aprovar ou alterar o papel de um usuário
+export const atualizarStatusUsuario = (uid, novoStatus) => {
+  const userDocRef = doc(db, 'usuarios', uid);
+  // Usa merge: true para atualizar apenas o campo status sem apagar o resto
+  return setDoc(userDocRef, { status: novoStatus }, { merge: true });
+};
+
+
 // --- DADOS MOCADOS (Para Guias e Plantas) ---
 // (O resto do seu arquivo continua igual)
 

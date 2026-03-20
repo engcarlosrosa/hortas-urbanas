@@ -22,6 +22,9 @@ import GuiaDetailPage from './pages/GuiaDetailPage.jsx';
 import PlantasPage from './pages/PlantasPage.jsx';
 import PlantaDetailPage from './pages/PlantaDetailPage.jsx';
 
+// Página de Administração (Gerenciamento de Usuários)
+import AdminUsersPage from "./pages/AdminUsersPage.jsx";
+
 function App() {
   return (
     <BrowserRouter>
@@ -49,6 +52,9 @@ function App() {
             <Route path="/manutencao/:id" element={<GuiaDetailPage />} />
             <Route path="/plantas" element={<PlantasPage />} />
             <Route path="/plantas/:id" element={<PlantaDetailPage />} />
+
+            {/* Rota de Administração */}
+            <Route path="/admin/usuarios" element={<AdminUsersPage />} /> 
             
             {/* TODO: Adicionar uma página 404 (NotFoundPage) */}
           </Routes>

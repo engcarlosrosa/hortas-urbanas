@@ -8,9 +8,19 @@ import {
   onAuthStateChanged // Este é o "ouvinte"
 } from 'firebase/auth';
 
+// Importa a função para criar o perfil do usuário no Firestore
+import { criarPerfilUsuario } from './firestoreService.js';
+
 // Função de Cadastro
-export const cadastrarUsuario = (email, password) => {
-  return createUserWithEmailAndPassword(auth, email, password);
+export const cadastrarUsuario = async (email, password, nome, role) => {
+  // 1. Cria a conta técnica (e-mail/senha)
+  const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+  const user = userCredential.user;
+
+  // 2. Cria o perfil no Firestore com os dados que você quer (nome, role, status)
+  await criarPerfilUsuario(user.uid, nome, email, role);
+  
+  return user;
 };
 
 // Função de Login
