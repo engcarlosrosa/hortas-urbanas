@@ -95,7 +95,31 @@ export const getGuiaById = async (id) => {
   }
 };
 
-// --- NOVAS FUNÇÕES PARA PLANTAS ---
+// --- FUNÇÕES PARA PLANTAS ---
+
+// Função para cadastrar uma nova planta (usada no CreatePlantaPage)
+export const cadastrarNovaPlanta = (dadosPlanta, uid) => {
+  const plantasCollectionRef = collection(db, 'plantas');
+  return addDoc(plantasCollectionRef, {
+    ...dadosPlanta,
+    // Garante que campos antigos e novos coexistam sem quebrar
+    autorUid: uid,
+    criadoEm: serverTimestamp(),
+    status: 'aprovado' // Plantas de especialistas já entram aprovadas
+  });
+};
+
+// Função para ATUALIZAR uma planta existente
+export const atualizarPlanta = (id, dadosAtualizados) => {
+  const plantaDocRef = doc(db, 'plantas', id);
+  return setDoc(plantaDocRef, dadosAtualizados, { merge: true });
+};
+
+// Função para EXCLUIR uma planta
+export const excluirPlanta = (id) => {
+  const plantaDocRef = doc(db, 'plantas', id);
+  return deleteDoc(plantaDocRef);
+};
 
 // Função para buscar a LISTA de todas as plantas
 export const getPlantas = async () => {

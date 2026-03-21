@@ -25,6 +25,11 @@ import PlantaDetailPage from './pages/PlantaDetailPage.jsx';
 // Página de Administração (Gerenciamento de Usuários)
 import AdminUsersPage from "./pages/AdminUsersPage.jsx";
 
+// Página de Cadastro de Plantas (Especialistas)
+import CadastrarPlantaPage from "./pages/CadastrarPlantaPage.jsx";
+
+
+
 function App() {
   return (
     <BrowserRouter>
@@ -52,6 +57,8 @@ function App() {
             <Route path="/manutencao/:id" element={<GuiaDetailPage />} />
             <Route path="/plantas" element={<PlantasPage />} />
             <Route path="/plantas/:id" element={<PlantaDetailPage />} />
+            <Route path="/plantas/novo" element={<CadastrarPlantaPage />} />  
+            <Route path="/plantas/editar/:id" element={<CadastrarPlantaPage />} />
 
             {/* Rota de Administração */}
             <Route path="/admin/usuarios" element={<AdminUsersPage />} /> 
