@@ -15,6 +15,7 @@ import ReportarTerrenoPage from "./pages/ReportarTerrenoPage.jsx";
 import ApoieUmaHortaPage from "./pages/ApoieUmaHortaPage.jsx";
 import AgendaPage from "./pages/AgendaPage.jsx";
 import ForumPage from "./pages/ForumPage.jsx";
+import CadastrarHortaPage from './pages/CadastrarHortaPage';
 
 // Páginas (Semana 2 - Conteúdo e Guias)
 import ManutencaoPage from './pages/ManutencaoPage.jsx';
@@ -52,6 +53,11 @@ function App() {
             <Route path="/agenda" element={<AgendaPage />} />
             <Route path="/forum" element={<ForumPage />} />
             
+            {/* Rotas de Gestão de Hortas e Impacto */}
+            <Route path="/reportar" element={<ReportarTerrenoPage />} /> {/* NOVO TERRENO */}
+            <Route path="/cadastrar-horta/:id" element={<CadastrarHortaPage />} /> {/* IMPACTO ESG */}
+           <Route path="/cadastrar-horta/:id" element={<CadastrarHortaPage />} />
+
             {/* Rotas de Conteúdo e Guias (Suas rotas INCLUÍDAS) */}
             <Route path="/manutencao" element={<ManutencaoPage />} />
             <Route path="/manutencao/:id" element={<GuiaDetailPage />} />
@@ -59,6 +65,7 @@ function App() {
             <Route path="/plantas/:id" element={<PlantaDetailPage />} />
             <Route path="/plantas/novo" element={<CadastrarPlantaPage />} />  
             <Route path="/plantas/editar/:id" element={<CadastrarPlantaPage />} />
+
 
             {/* Rota de Administração */}
             <Route path="/admin/usuarios" element={<AdminUsersPage />} /> 
