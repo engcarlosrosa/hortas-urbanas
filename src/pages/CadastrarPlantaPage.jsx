@@ -11,19 +11,20 @@ const CadastrarPlantaPage = () => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     nome: '',
     nomeCientifico: '',
-    categoria: '', // Campo que já existe Firestore
+    categoria: '', 
     descricao: '',
-    cuidados: '',           // Campo que já existe Firestore
+    cuidados: '',           
     sol: '',
     rega: '',
-    pesoMedio: '', // Novo campo da pesquisa Bio
-    co2Evitado: '', // Novo campo da pesquisa Bio
+    pesoMedio: '', 
+    co2Evitado: '', 
     beneficio: '',  
-    epoca: '',              // Campo que já existe Firestore
-    imageUrl: ''            // Para as fotos aparecerem
+    epoca: '',              
+    imageUrl: '' // Mantido como string para receber a URL colada            
   });
 
   // Bloqueio de segurança na renderização
@@ -35,8 +36,14 @@ const CadastrarPlantaPage = () => {
   useEffect(() => {
     if (id) {
       const carregarDados = async () => {
-        const planta = await getPlantaById(id); // Função que já temos no service
-        setFormData(planta);
+        try {
+          const planta = await getPlantaById(id); 
+          if (planta) {
+            setFormData(planta);
+          }
+        } catch (error) {
+          console.error("Erro ao carregar dados da planta para edição:", error);
+        }
       };
       carregarDados();
     }
@@ -47,21 +54,32 @@ const CadastrarPlantaPage = () => {
     setLoading(true);
     
     try {
-      // Se existir um ID na URL, chamamos a função de atualizar
+      // HIGIENIZAÇÃO DOS DADOS: Força strings numéricas virarem Numbers
+      const dadosParaSalvar = {
+        ...formData,
+        pesoMedio: formData.pesoMedio ? Number(formData.pesoMedio) : 0,
+        co2Evitado: formData.co2Evitado ? Number(formData.co2Evitado) : 0
+      };
+
+      // Proteção: Remove a propriedade interna 'id' caso ela tenha vindo do Firestore
+      if (dadosParaSalvar.id) {
+        delete dadosParaSalvar.id;
+      }
+
       if (id) {
-        await atualizarPlanta(id, formData); //
-        alert("Dados atualizados com sucesso!");
-      } 
-      // Se NÃO existir ID, seguimos com o cadastro novo
-      else {
-        await cadastrarNovaPlanta(formData, currentUser.uid); //
-        alert("Planta cadastrada com sucesso!");
+        // Modo Edição
+        await atualizarPlanta(id, dadosParaSalvar); 
+        alert("Espécie atualizada com sucesso!");
+      } else {
+        // Modo Cadastro
+        await cadastrarNovaPlanta(dadosParaSalvar, currentUser.uid); 
+        alert("Nova espécie publicada com sucesso!");
       }
       
-      navigate('/plantas'); // Volta para a listagem
+      navigate('/plantas'); 
     } catch (error) {
-      console.error("Erro ao salvar:", error);
-      alert("Erro ao salvar os dados. Verifique sua conexão.");
+      console.error("Erro crítico ao salvar dados no Firestore:", error);
+      alert("Ocorreu um erro ao salvar as alterações. Verifique os campos de número.");
     } finally {
       setLoading(false);
     }
@@ -73,7 +91,7 @@ const CadastrarPlantaPage = () => {
         <PageTitle>{id ? 'Editar Espécie' : 'Cadastrar Nova Espécie'}</PageTitle>
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input 
-            placeholder="Nome Popular (ex: Alecrim)" 
+            placeholder="Nome Popular (ex: Boldo, Alecrim)" 
             value={formData.nome}
             onChange={(e) => setFormData({...formData, nome: e.target.value})}
             required 
@@ -83,14 +101,14 @@ const CadastrarPlantaPage = () => {
             value={formData.nomeCientifico}
             onChange={(e) => setFormData({...formData, nomeCientifico: e.target.value})}
           />
-          {/* Campos Técnicos da Gabrielly */}
+          
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1">
               <label className="text-xs text-gray-400 ml-1">Peso Médio (kg)</label>
               <Input 
                 type="number"
-                step="0.01"
-                placeholder="Ex: 1.50" 
+                step="0.001"
+                placeholder="Ex: 0.03" 
                 value={formData.pesoMedio}
                 onChange={(e) => setFormData({...formData, pesoMedio: e.target.value})}
                 required
@@ -108,7 +126,6 @@ const CadastrarPlantaPage = () => {
             </div>
           </div>
 
-          {/* Seleção de Categoria para Organização Automática */}
           <select 
             className="w-full p-2 bg-gray-800 border border-gray-700 rounded text-white"
             value={formData.categoria}
@@ -143,8 +160,33 @@ const CadastrarPlantaPage = () => {
               onChange={(e) => setFormData({...formData, rega: e.target.value})}
             />
           </div>
+
+          {/* NOVO CAMPO: Input de texto para colar a URL da Imagem */}
+          <div className="space-y-1">
+            <label className="text-xs text-gray-400 ml-1">URL da Imagem da Planta (Pexels, Unsplash, etc.)</label>
+            <Input 
+              type="text"
+              placeholder="Cole aqui o link direto da imagem (https://images.pexels.com/...)" 
+              value={formData.imageUrl}
+              onChange={(e) => setFormData({...formData, imageUrl: e.target.value})}
+            />
+          </div>
+
+          {/* VISUALIZAÇÃO EM TEMPO REAL: Se houver uma URL válida colada, exibe o preview na hora */}
+          {formData.imageUrl && (
+            <div className="text-center p-2 border border-gray-800 rounded bg-gray-900/50">
+              <p className="text-xs text-gray-400 mb-2">Visualização da Imagem:</p>
+              <img 
+                src={formData.imageUrl} 
+                alt="Preview" 
+                className="w-32 h-32 object-cover mx-auto rounded-lg shadow-md border border-gray-700"
+                onError={(e) => { e.target.style.display = 'none'; }} // Esconde se o link estiver quebrado
+              />
+            </div>
+          )}
+
           <Button type="submit" variant="primary" className="w-full" disabled={loading}>
-            {loading ? "Salvando..." : id ? "Salvar Alterações" : "Publicar Planta"}
+            {loading ? "Salvando no Firestore..." : id ? "Confirmar Alterações" : "Publicar Nova Espécie"}
           </Button>
         </form>
       </Card>
